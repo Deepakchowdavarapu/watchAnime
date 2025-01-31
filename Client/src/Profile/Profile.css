@@ -1,0 +1,46 @@
+.profile{
+    height: 100vh;
+    width: 100vw;
+    background-color: #242338;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile h1{
+    color: #ffd2da;
+    text-transform: uppercase;
+}
+
+.profile h3{
+    color: #ffd2da;
+}
+
+.namep{
+    display: flex;
+    /* gap:20px; */
+    align-items: flex-start;
+}
+
+.namep p{
+    color: lightskyblue;
+}
+
+i{
+    cursor: pointer;
+    color: #ffd2da;
+}
+
+.profile h2{
+    cursor: pointer;
+    color: #ffd2da;
+    padding: 1rem 2rem;
+    border: 1px solid #ffd2da;
+    border-radius: 20px;
+}
+
+.profile h2:hover{
+    color: #111;
+    background-color: #ffd2da;
+}

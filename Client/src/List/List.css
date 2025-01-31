@@ -1,0 +1,8 @@
+.list{
+    height: auto;
+    width: 100vw;
+    color: #ffd2fa;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}

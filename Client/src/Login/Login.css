@@ -1,0 +1,77 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* font-family: 'poppins',sans-serif; */
+}
+
+.login {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow-y: auto;
+    background-color: #312f44;
+    /* background-image: url('../../Assets/anw-min.webp');  */
+    background-size: cover; 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 60%;
+    transform: translate(50%, 25%);
+    border-radius: 30px;
+    background-color: rgba(128, 128, 128, 0.25);
+    backdrop-filter: blur(10px);
+    z-index: 1;
+    justify-content: center;
+    align-items: start;
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    color: rgba(244, 244, 244, 0.769);
+    gap: 20px;
+    overflow-y: scroll;
+}
+
+.container::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+.register-container{
+    height:80%;
+    transform: translate(50%,20%);
+}
+
+.login h1{
+    font-size: 40px;
+}
+
+.login p{
+    font-size: 30px;
+}
+
+.login-button{
+    width: fit-content;
+    padding: 6px 0px;
+    cursor: pointer;
+}
+
+.container input{
+    position: relative;
+    width: 100%;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.login-button:hover{
+    transform: scaleX(1.1);
+}
+
+.span-watch{
+    color: rgba(230, 149, 50, 0.769);
+}
+
+.span-anime,a{
+    color: darkblue;
+}
