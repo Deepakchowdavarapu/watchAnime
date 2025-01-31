@@ -30,7 +30,7 @@ export default function Register() {
             localStorage.setItem("authToken",response.data.userData)
             navigate('/')
         }catch(err){
-            console.log(`catch block error`,err)
+            // console.log(`catch block error`,err)
         }
 
             // .then(response => {

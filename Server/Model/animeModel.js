@@ -15,6 +15,7 @@ mongoose.connect(mongoDBUrl)
 
 
 const animeSchema = new mongoose.Schema({
+  email:String,
   title: String,
   image: String,
   type: String,

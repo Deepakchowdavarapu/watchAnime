@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import Nav from "../NavBar/Nav";
 import MiniNav from "../NavBar/MiniNav";
 import "./Browse.css";
 import useGetSavedAnimes from "../../Hooks/useGetSavedAnimes";
 import useFetchUserData from "../../Hooks/useFetchUserData";
-import { json, useNavigate } from "react-router-dom";
 
 export default function Browse() {
-  const [info, setInfo] = React.useState([]);
-  const [page, setPage] = React.useState(1);
-  const [visibleDescription, setVisibleDescription] = React.useState(null);
-  const { fetchSavedAnimes, savedAnimes, isLoading } = useGetSavedAnimes();
+  const [info, setInfo] = useState([]);
+  const [page, setPage] = useState(1);
+  const [visibleDescription, setVisibleDescription] = useState(null);
+  const { savedAnimes, setSavedAnimes, isLoading, error } = useGetSavedAnimes();
   const { fetchTokenData, userData } = useFetchUserData();
   const navigate = useNavigate();
 
+  // Check authentication on mount
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     if (!authToken) {
       navigate("/login");
     } else {
-      fetchTokenData();
+      fetchTokenData(); // Fetch user data
     }
   }, []);
 
+  // Fetch anime data when `page` changes
   useEffect(() => {
     const loadAnimes = async () => {
       try {
@@ -31,6 +33,10 @@ export default function Browse() {
           `https://api.jikan.moe/v4/top/anime?page=${page}&limit=5`
         );
         const data = await response.json();
+        // console.log(data.data[0].mal_id)
+        // data.data.map((list)=>(
+        //   console.log(list.mal_id)
+        // ))
         const newInfo = data.data.map((anime) => ({
           id: anime.mal_id,
           title: anime.title,
@@ -50,103 +56,108 @@ export default function Browse() {
     loadAnimes();
   }, [page]);
 
-  const handleStarClick = async (
-    event,
-    index,
-    title,
-    image,
-    type,
-    total_episodes,
-    rating
-  ) => {
+  // Function to check if an anime is already saved
+  const isAnimeSaved = (title) => {
+    return savedAnimes?.some((anime) => anime.title === title) || false;
+  };
+
+  // Handle starring an anime (saving to favorites)
+  const handleStarClick = async (event, anime) => {
     event.stopPropagation();
+    if (!userData?.email) {
+      console.warn("User email not available yet.");
+      return;
+    }
 
     try {
-      const email_holder = await userData.email;
-      console.log(`yo its me email`, email_holder);
       const response = await fetch("http://localhost:5775/api/starred-anime", {
         method: "POST",
-        headers: {
+        headers: { 
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email_holder,
-          title,
-          image,
-          type,
-          total_episodes,
-          rating,
+          email: userData.email,
+          title: anime.title,
+          image: anime.image,
+          type: anime.type,
+          total_episodes: anime.total_episodes,
+          rating: anime.rating,
         }),
       });
+
       const data = await response.json();
       console.log("Response from server:", data.message);
-      await fetchSavedAnimes();
+
+      // Update local state immediately
+      if (isAnimeSaved(anime.title)) {
+        // If anime was saved, remove it
+        setSavedAnimes(
+          savedAnimes.filter((saved) => saved.title !== anime.title)
+        );
+      } else {
+        // If anime wasn't saved, add it
+        setSavedAnimes([...savedAnimes, anime]);
+      }
     } catch (error) {
-      console.error("Error:", error);
-    }
+      console.error("Error starring anime:", error);
+    }  
   };
 
+  // Toggle description visibility
   const handleAnimeClick = (id) => {
     setVisibleDescription(visibleDescription === id ? null : id);
-  };
-
-  const isAnimeSaved = (title) => {
-    if (!Array.isArray(savedAnimes)) return false;
-
-    // Normalize the title for comparison
-    const normalizedTitle = title.trim().toLowerCase();
-
-    // Check if any saved anime's title matches the normalized title
-    return savedAnimes.some(
-      (saved) => saved.title.trim().toLowerCase() === normalizedTitle
-    );
   };
 
   return (
     <div id="/browse" className="browse">
       <Nav />
-      {info && info.length ? (
-        <>
-          <div className="animeList">
-            {info.map((item) => (
-              <div
-                className="anime-holder"
-                key={item.id}
-                onClick={() => handleAnimeClick(item.id)}
-              >
-                <FaStar
-                  className="star"
-                  onClick={(event) =>
-                    handleStarClick(
-                      event,
-                      item.id,
-                      item.title,
-                      item.image,
-                      item.type,
-                      item.total_episodes,
-                      item.rating
-                    )
-                  }
-                  color={isAnimeSaved(item.title) ? "gold" : "black"}
-                  size={40}
-                />
-                <img src={item.image} alt="anime" />
-                <h1 id="anime-name">{item.title}</h1>
-                {visibleDescription === item.id && (
-                  <div className="anime-description">{item.description}</div>
-                )}
-              </div>
-            ))}
-            <button onClick={() => setPage(page + 1)} className="load-more">
-              <p>Load more</p>
-            </button>
-          </div>
-        </>
-      ) : (
+
+      {isLoading ? (
         <div className="loading-time">
           <h1>Loading...</h1>
         </div>
+      ) : error ? (
+        <div className="error">
+          <h1>Error: {error}</h1>
+        </div>
+      ) : info.length > 0 ? (
+        <div className="anime-grid">
+          {info.map((anime) => (
+              <div key={anime.mal_id} 
+              className="anime-card"
+              onClick={() => handleAnimeClick(anime.id)}
+            >
+              <FaStar
+                className="star"
+                onClick={(event) => handleStarClick(event, anime)}
+                color={isAnimeSaved(anime.title) ? "gold" : "black"}
+                size={40}
+              />
+              <img src={anime.image} alt={anime.title} />
+              <h3 id="anime-name">{anime.title}</h3>
+              {visibleDescription === anime.id && (
+                <div className="anime-description">
+                  <h1 onClick={(e)=>handleAnimeClick(e,anime)}>close</h1>
+                  <p>Title: {anime.title}</p>
+                  <img src={anime.image} alt="image" />
+                  <p>Description:{anime.description}</p>
+                  <p>Info:{anime.type}
+                  {anime.total_episodes}
+                  {anime.rating}</p>
+                  </div>
+              )}
+            </div>
+          ))}
+          <button onClick={() => setPage(page + 1)} className="load-more">
+            <p>Load more</p>
+          </button>
+        </div>
+      ) : (
+        <div className="loading-time">
+          <h1>No Animes Found</h1>
+        </div>
       )}
+
       <MiniNav />
     </div>
   );

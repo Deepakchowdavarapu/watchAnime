@@ -7,7 +7,7 @@ import List from "../List/List";
 import useFetchUserData from "../../Hooks/useFetchUserData";
 
 const Home = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
   const { fetchTokenData, userData } = useFetchUserData();
 
   useEffect(() => {
@@ -21,6 +21,9 @@ const Home = () => {
 
   return (
     <div className="home">
+      <div className="top-picks">
+        <h2>Your Favorites</h2>
+      </div>
       <Nav />
       <List />
       <MiniNav />

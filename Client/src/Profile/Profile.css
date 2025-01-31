@@ -9,12 +9,12 @@
 }
 
 .profile h1{
-    color: #ffd2da;
+    color: #ffd2fa;
     text-transform: uppercase;
 }
 
 .profile h3{
-    color: #ffd2da;
+    color: #ffd2fa;
 }
 
 .namep{
@@ -29,18 +29,18 @@
 
 i{
     cursor: pointer;
-    color: #ffd2da;
+    color: #ffd2fa;
 }
 
 .profile h2{
     cursor: pointer;
-    color: #ffd2da;
+    color: #ffd2fa;
     padding: 1rem 2rem;
-    border: 1px solid #ffd2da;
+    border: 1px solid #ffd2fa;
     border-radius: 20px;
 }
 
 .profile h2:hover{
     color: #111;
-    background-color: #ffd2da;
+    background-color: #ffd2fa;
 }

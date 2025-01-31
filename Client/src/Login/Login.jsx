@@ -11,7 +11,7 @@ export default function Login() {
     useEffect(()=>{
         const Auth = localStorage.getItem('authToken')
         if(Auth){
-            console.log(Auth)
+            // console.log(Auth)
             navigate('/')
         }
     },[])
@@ -21,10 +21,10 @@ export default function Login() {
             const response = await axios.post('http://localhost:5775/login',{email,password})
             const user = JSON.stringify(response.data.userData)
             localStorage.setItem('authToken',user)
-            console.log(response)
+            // console.log(response)
             navigate('/')
         }catch(err){
-            console.log(`error: `,err)
+            // console.log(`error: `,err)
         }
     };
 

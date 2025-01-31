@@ -11,7 +11,7 @@ const useFetchUserData=()=>{
                 // console.log('Parsed token data:', parsedData)
             }
         }catch(err){
-                console.log(`Error parsing token data:`,err)
+                // console.log(`Error parsing token data:`,err)
                 setUserData({})
         }
     }

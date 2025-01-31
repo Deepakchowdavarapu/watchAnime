@@ -22,6 +22,11 @@
     max-width: 1200px;
 }
 
+.intro p{
+    color: #ffd2fa;
+}
+
+
 .intro-left {
     flex: 1;
     color: #fff;

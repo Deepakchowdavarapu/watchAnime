@@ -17,7 +17,7 @@ app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URL, {
 }).then(() => {
-    console.log('Connected to MongoDB');
+    // console.log('Connected to MongoDB');
 }).catch((err) => {
     console.error('Error connecting to MongoDB', err);
 });
@@ -47,12 +47,14 @@ app.post('/Register', async (req, res) => {
             return res.status(409).json({ message: "Email already in use" });
         }
 
+        console.log(`attempt to register with: `, name, email , password)
+
         const hashedPassword = await bcrypt.hash(password, 12); // creating hashedPassword
 
         const NewUser = await User.create({
             name,
             email,
-            password: password
+            password
         });
 
         const token = jwt.sign({ id: NewUser._id }, process.env.JWT_SECRET, { expiresIn: '20h' });
@@ -65,7 +67,7 @@ app.post('/Register', async (req, res) => {
 
         // localStorage is not available in Node.js, so this line is removed
         // res.setHeader('userData', JSON.stringify(userData));
-        console.log(`header set`)
+        // console.log(`header set`)
         const userData = JSON.stringify(Data)
         res.status(201).json({ message: "changed statement of user registered success", userData});
 
@@ -84,17 +86,26 @@ app.post('/Login', async (req, res) => {
             return res.status(400).json({ message: 'Email and password are required' });
         }
 
+        // console.log(`attempting to login with`, email,password)
+
         const ExistingUser = await User.findOne({ email });
 
         if (!ExistingUser) {
             return res.status(409).json({ message: 'No user found' });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, ExistingUser.password);
+        // const isPasswordValid = await bcrypt.compare(password, ExistingUser.password);
 
-        if (!isPasswordValid) {
-            return res.status(409).json(`Incorrect password`);
+        // if (!isPasswordValid) {
+        //     console.log(`this one?`)
+        //     return res.status(409).json(`Incorrect password`);
+        // }
+
+        if(password != ExistingUser.password){
+            res.status(409).json({message:`Incorrect Password`})
         }
+
+        // console.log(`saved pass is: `,ExistingUser.password , `entered pass :`,password)
 
         const token = jwt.sign({ id: ExistingUser._id }, process.env.JWT_SECRET, { expiresIn: '20h' });
         const userData = {
@@ -163,16 +174,17 @@ app.post('/api/starred-anime', async (req, res) => {
         res.status(500).json({ error: 'Error processing anime' });
     }
 });
+
 app.post("/api/starred-anime-titles", async (req, res) => {
     try {
         const { email } = req.body;
-        console.log(`Fetching starred animes for: ${email}`);
+        // console.log(`Fetching starred animes for: ${email}`);
 
         if (!email) {
             return res.status(400).json({ error: "Email is required" });
         }
 
-        const animes = await Anime.find({ userEmail: email }, "title");
+        const animes = await Anime.find({ email: email });
         res.status(200).json(animes);
     } catch (err) {
         console.error("Error fetching anime titles:", err);
@@ -183,6 +195,6 @@ app.post("/api/starred-anime-titles", async (req, res) => {
 
 const PORT = process.env.PORT || 5775;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    // console.log(`Server is running on port ${PORT}`);
     // console.log('MONGODB_URL:', process.env.MONGODB_URL);
 });
