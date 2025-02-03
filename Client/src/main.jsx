@@ -14,45 +14,45 @@ import Profile from "./Profile/Profile";
 function Main() {
   const [starred, setStarred] = useState([]);
 
-//   useEffect(() => {
-//     const fetchUserData = async () => {
-//       const token = localStorage.getItem("authToken");
-//       if (token) {
-//         const userData = await axios.get("http://localhost:5775/user", {
-//           headers: {
-//             Authorization: token,
-//           },
-//         });
-//         setStarred(userData.data.starredAnimes || []);
-//       }
-//     };
+  //   useEffect(() => {
+  //     const fetchUserData = async () => {
+  //       const token = localStorage.getItem("authToken");
+  //       if (token) {
+  //         const userData = await axios.get("https://watchanime-z8oa.onrender.com/user", {
+  //           headers: {
+  //             Authorization: token,
+  //           },
+  //         });
+  //         setStarred(userData.data.starredAnimes || []);
+  //       }
+  //     };
 
-//     fetchUserData();
-//   }, []);
+  //     fetchUserData();
+  //   }, []);
 
-//   useEffect(() => {
-//     const updateUserData = async () => {
-//       const token = localStorage.getItem("authToken");
-//       if (token) {
-//         await axios.put(
-//           "http://localhost:5775/user",
-//           {
-//             starredAnimes: starred,
-//           },
-//           {
-//             headers: {
-//               Authorization: token,
-//               "Content-Type": "application/json",
-//             },
-//           }
-//         );
-//       }
-//     };
-//
-//     if (starred.length > 0) {
-//       updateUserData();
-//     }
-//   }, [starred]);
+  //   useEffect(() => {
+  //     const updateUserData = async () => {
+  //       const token = localStorage.getItem("authToken");
+  //       if (token) {
+  //         await axios.put(
+  //           "https://watchanime-z8oa.onrender.com/user",
+  //           {
+  //             starredAnimes: starred,
+  //           },
+  //           {
+  //             headers: {
+  //               Authorization: token,
+  //               "Content-Type": "application/json",
+  //             },
+  //           }
+  //         );
+  //       }
+  //     };
+  //
+  //     if (starred.length > 0) {
+  //       updateUserData();
+  //     }
+  //   }, [starred]);
 
   return (
     <BrowserRouter>
@@ -60,10 +60,10 @@ function Main() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
-        <Route path="/Intro" element={<Intro/>}/>
-        <Route path="/browse" element={<Browse/>}/>
-        <Route path="/rate" element={<Rate/>}/>
-        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/Intro" element={<Intro />} />
+        <Route path="/browse" element={<Browse />} />
+        <Route path="/rate" element={<Rate />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );

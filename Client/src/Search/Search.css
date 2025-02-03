@@ -1,0 +1,19 @@
+.results{
+    position: absolute;
+}
+
+.result-titles{
+    white-space:nowrap;
+    overflow: hidden;
+    max-width: 400PX;
+    background-color: #ffd2fa;
+    border:1px solid black;
+    align-items: start;
+    text-align: start;
+    list-style:none;
+}
+
+.result-titles:hover{
+    cursor: pointer;
+    background-color: #fff8fe;
+}

@@ -6,6 +6,7 @@ import MiniNav from "../NavBar/MiniNav";
 import "./Browse.css";
 import useGetSavedAnimes from "../../Hooks/useGetSavedAnimes";
 import useFetchUserData from "../../Hooks/useFetchUserData";
+import { MdOutlineOpenInFull } from "react-icons/md";
 
 export default function Browse() {
   const [info, setInfo] = useState([]);
@@ -30,7 +31,7 @@ export default function Browse() {
     const loadAnimes = async () => {
       try {
         const response = await fetch(
-          `https://api.jikan.moe/v4/top/anime?page=${page}&limit=5`
+          `https://api.jikan.moe/v4/top/anime?page=${page}&limit=7`
         );
         const data = await response.json();
         // console.log(data.data[0].mal_id)
@@ -70,20 +71,23 @@ export default function Browse() {
     }
 
     try {
-      const response = await fetch("http://localhost:5775/api/starred-anime", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userData.email,
-          title: anime.title,
-          image: anime.image,
-          type: anime.type,
-          total_episodes: anime.total_episodes,
-          rating: anime.rating,
-        }),
-      });
+      const response = await fetch(
+        "https://watchanime-z8oa.onrender.com/api/starred-anime",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: userData.email,
+            title: anime.title,
+            image: anime.image,
+            type: anime.type,
+            total_episodes: anime.total_episodes,
+            rating: anime.rating,
+          }),
+        }
+      );
 
       const data = await response.json();
       console.log("Response from server:", data.message);
@@ -100,7 +104,7 @@ export default function Browse() {
       }
     } catch (error) {
       console.error("Error starring anime:", error);
-    }  
+    }
   };
 
   // Toggle description visibility
@@ -123,29 +127,32 @@ export default function Browse() {
       ) : info.length > 0 ? (
         <div className="anime-grid">
           {info.map((anime) => (
-              <div key={anime.mal_id} 
+            <div
+              key={anime.mal_id}
               className="anime-card"
               onClick={() => handleAnimeClick(anime.id)}
             >
               <FaStar
                 className="star"
                 onClick={(event) => handleStarClick(event, anime)}
-                color={isAnimeSaved(anime.title) ? "gold" : "black"}
+                color={isAnimeSaved(anime.title) ? "gold" : "pink"}
                 size={40}
               />
               <img src={anime.image} alt={anime.title} />
               <h3 id="anime-name">{anime.title}</h3>
-              {visibleDescription === anime.id && (
-                <div className="anime-description">
-                  <h1 onClick={(e)=>handleAnimeClick(e,anime)}>close</h1>
+              {/* {visibleDescription === anime.id && (
+                <div className="anime-description" style={{position:"fixed",background:"white",top:0,left:0}}>
+                  <h1 onClick={(e) => handleAnimeClick(e, anime)}>close</h1>
                   <p>Title: {anime.title}</p>
                   <img src={anime.image} alt="image" />
                   <p>Description:{anime.description}</p>
-                  <p>Info:{anime.type}
-                  {anime.total_episodes}
-                  {anime.rating}</p>
-                  </div>
-              )}
+                  <p>
+                    Info:{anime.type}
+                    {anime.total_episodes}
+                    {anime.rating}
+                  </p>
+                </div>
+              )} */}
             </div>
           ))}
           <button onClick={() => setPage(page + 1)} className="load-more">

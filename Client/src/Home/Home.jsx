@@ -8,7 +8,7 @@ import useFetchUserData from "../../Hooks/useFetchUserData";
 
 const Home = () => {
   const navigate = useNavigate();  
-  const { fetchTokenData, userData } = useFetchUserData();
+  const { fetchTokenData } = useFetchUserData();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -22,7 +22,6 @@ const Home = () => {
   return (
     <div className="home">
       <div className="top-picks">
-        <h2>Your Favorites</h2>
       </div>
       <Nav />
       <List />

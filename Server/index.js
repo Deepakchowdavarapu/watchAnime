@@ -192,9 +192,9 @@ app.post("/api/starred-anime-titles", async (req, res) => {
     }
 });
 
-app.get('/health',async(req,res)=>{
-    res.status(200).json({message:`app is fine`})
-})
+app.get('/health', async (req, res) => {
+    res.status(200).json({ message: `app is fine` });
+});
 
 const PORT = process.env.PORT || 5775;
 app.listen(PORT, () => {

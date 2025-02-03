@@ -17,6 +17,7 @@
 }
 
 .anime-grid {
+    margin-top: 10%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
@@ -31,24 +32,37 @@
 
 .anime-card {
     background: #ffd2fa;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     overflow: hidden;
     transition: transform 0.3s ease;
+    max-width: 200px;
+    position: relative;
+    white-space: nowrap;
+    
 }
 
-/* .anime-card:hover {
+.anime-card:hover {
     transform: translateY(-5px);
-} */
+}
 
 .anime-image {
-    width: 100%;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
 }
 
 .anime-info {
-    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px 0;
+}
+
+.star{
+    position: absolute;
+    z-index: 30;
+    cursor: pointer;
 }
 
 .anime-info h3 {
@@ -67,15 +81,17 @@
 .error-container,
 .empty-container {
     text-align: center;
-    padding: 50px;
+    /* padding: 50px; */
     font-size: 1.2em;
     color: #666;
 }
 
 .load-more{
     background: #ffd2fa;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     overflow: hidden;
     transition: transform 0.3s ease;
+    max-width: 200px;
+    position: relative;
 }

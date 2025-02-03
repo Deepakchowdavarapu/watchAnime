@@ -21,7 +21,7 @@ const useGetSavedAnimes = () => {
             try {
                 // console.log("Fetching saved animes for:", userData.email);
 
-                const response = await fetch("http://localhost:5775/api/starred-anime-titles", {
+                const response = await fetch("https://watchanime-z8oa.onrender.com/api/starred-anime-titles", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
