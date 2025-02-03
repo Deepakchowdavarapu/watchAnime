@@ -15,6 +15,11 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem('authToken')
+      if(!token){
+            navigate('/')
+        }
+
     fetchTokenData();
   }, []);
 
